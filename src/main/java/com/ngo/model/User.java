@@ -48,6 +48,9 @@ public class User extends DateAudit {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    private Set<Donation> donations;
+
     public User() {
 
     }
@@ -105,5 +108,24 @@ public class User extends DateAudit {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(Set<Donation> donations) {
+        this.donations = donations;
+    }
+
+    public void addDonations(Donation donation) {
+        if (donation != null) {
+            if (donations == null) {
+                donations = new HashSet<>();
+            }
+            donation.setUser(this);
+            donations.add(donation);
+        }
+
     }
 }
